@@ -5,6 +5,9 @@
  * Command-line interface for EvoSpec DSL validation, generation, and versioning
  */
 
+// Load environment variables from .env file
+import 'dotenv/config';
+
 import { Command } from 'commander';
 import { readFileSync, existsSync, writeFileSync } from 'fs';
 import { resolve, basename } from 'path';
