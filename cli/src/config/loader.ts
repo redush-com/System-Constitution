@@ -3,11 +3,11 @@
  * Loads config from global (~/.evospec/config.yaml) and local (.evospec/config.yaml)
  */
 
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { homedir } from 'os';
 import { join, resolve } from 'path';
 import { parse as parseYaml } from 'yaml';
-import type { EvoSpecConfig, ProjectLocalConfig, LLMProviderName } from './schema.js';
+import type { EvoSpecConfig, ProjectLocalConfig, LLMProviderName, LLMConfig, VersioningConfig } from './schema.js';
 import { DEFAULT_CONFIG, ENV_KEYS } from './defaults.js';
 
 const GLOBAL_CONFIG_DIR = join(homedir(), '.evospec');
@@ -15,32 +15,39 @@ const GLOBAL_CONFIG_FILE = join(GLOBAL_CONFIG_DIR, 'config.yaml');
 const LOCAL_CONFIG_DIR = '.evospec';
 const LOCAL_CONFIG_FILE = 'config.yaml';
 
-function deepMerge<T extends Record<string, unknown>>(target: T, source: Partial<T>): T {
-  const result = { ...target };
-  
-  for (const key in source) {
-    const sourceValue = source[key];
-    const targetValue = target[key];
-    
-    if (
-      sourceValue !== undefined &&
-      typeof sourceValue === 'object' &&
-      sourceValue !== null &&
-      !Array.isArray(sourceValue) &&
-      typeof targetValue === 'object' &&
-      targetValue !== null &&
-      !Array.isArray(targetValue)
-    ) {
-      (result as Record<string, unknown>)[key] = deepMerge(
-        targetValue as Record<string, unknown>,
-        sourceValue as Record<string, unknown>
-      );
-    } else if (sourceValue !== undefined) {
-      (result as Record<string, unknown>)[key] = sourceValue;
-    }
-  }
-  
-  return result;
+/**
+ * Deep merge two objects, with source values overriding target values.
+ * Only merges plain objects, arrays and primitives are replaced.
+ */
+function deepMergeLLMConfig(target: LLMConfig, source: Partial<LLMConfig>): LLMConfig {
+  return {
+    provider: source.provider ?? target.provider,
+    models: source.models ? { ...target.models, ...source.models } : target.models,
+    temperature: source.temperature ?? target.temperature,
+    maxRetries: source.maxRetries ?? target.maxRetries,
+  };
+}
+
+function deepMergeVersioningConfig(target: VersioningConfig, source: Partial<VersioningConfig>): VersioningConfig {
+  return {
+    autoCommit: source.autoCommit ?? target.autoCommit,
+    autoTag: source.autoTag ?? target.autoTag,
+    tagPrefix: source.tagPrefix ?? target.tagPrefix,
+  };
+}
+
+function mergeConfig(target: EvoSpecConfig, source: Partial<EvoSpecConfig>): EvoSpecConfig {
+  return {
+    project: source.project ?? target.project,
+    llm: source.llm ? deepMergeLLMConfig(target.llm, source.llm) : target.llm,
+    providers: source.providers ? {
+      openrouter: { ...target.providers.openrouter, ...source.providers.openrouter },
+      openai: { ...target.providers.openai, ...source.providers.openai },
+      anthropic: { ...target.providers.anthropic, ...source.providers.anthropic },
+      ollama: { ...target.providers.ollama, ...source.providers.ollama },
+    } : target.providers,
+    versioning: source.versioning ? deepMergeVersioningConfig(target.versioning, source.versioning) : target.versioning,
+  };
 }
 
 function loadYamlFile<T>(filePath: string): T | null {
@@ -57,7 +64,7 @@ function loadYamlFile<T>(filePath: string): T | null {
 }
 
 export function loadGlobalConfig(): Partial<EvoSpecConfig> {
-  return loadYamlFile<Partial<EvoSpecConfig>>(GLOBAL_CONFIG_FILE) || {};
+  return loadYamlFile<Partial<EvoSpecConfig>>(GLOBAL_CONFIG_FILE) ?? {};
 }
 
 export function loadLocalConfig(cwd: string = process.cwd()): ProjectLocalConfig | null {
@@ -67,11 +74,11 @@ export function loadLocalConfig(cwd: string = process.cwd()): ProjectLocalConfig
 
 export function loadConfig(cwd: string = process.cwd()): EvoSpecConfig {
   // Start with defaults
-  let config = { ...DEFAULT_CONFIG };
+  let config: EvoSpecConfig = { ...DEFAULT_CONFIG };
   
   // Merge global config
   const globalConfig = loadGlobalConfig();
-  config = deepMerge(config, globalConfig);
+  config = mergeConfig(config, globalConfig);
   
   // Merge local config
   const localConfig = loadLocalConfig(cwd);
@@ -80,22 +87,25 @@ export function loadConfig(cwd: string = process.cwd()): EvoSpecConfig {
       config.project = localConfig.project;
     }
     if (localConfig.llm) {
-      config.llm = deepMerge(config.llm, localConfig.llm);
+      config.llm = deepMergeLLMConfig(config.llm, localConfig.llm);
     }
     if (localConfig.versioning) {
-      config.versioning = deepMerge(config.versioning, localConfig.versioning);
+      config.versioning = deepMergeVersioningConfig(config.versioning, localConfig.versioning);
     }
   }
   
   // Apply environment variables for API keys
-  if (process.env[ENV_KEYS.OPENROUTER_API_KEY]) {
-    config.providers.openrouter.apiKey = process.env[ENV_KEYS.OPENROUTER_API_KEY];
+  const openrouterKey = process.env[ENV_KEYS.OPENROUTER_API_KEY];
+  if (openrouterKey) {
+    config.providers.openrouter.apiKey = openrouterKey;
   }
-  if (process.env[ENV_KEYS.OPENAI_API_KEY]) {
-    config.providers.openai.apiKey = process.env[ENV_KEYS.OPENAI_API_KEY];
+  const openaiKey = process.env[ENV_KEYS.OPENAI_API_KEY];
+  if (openaiKey) {
+    config.providers.openai.apiKey = openaiKey;
   }
-  if (process.env[ENV_KEYS.ANTHROPIC_API_KEY]) {
-    config.providers.anthropic.apiKey = process.env[ENV_KEYS.ANTHROPIC_API_KEY];
+  const anthropicKey = process.env[ENV_KEYS.ANTHROPIC_API_KEY];
+  if (anthropicKey) {
+    config.providers.anthropic.apiKey = anthropicKey;
   }
   
   return config;
@@ -104,43 +114,36 @@ export function loadConfig(cwd: string = process.cwd()): EvoSpecConfig {
 export function getApiKey(provider: LLMProviderName, config: EvoSpecConfig): string | undefined {
   switch (provider) {
     case 'openrouter':
-      return config.providers.openrouter.apiKey || process.env[ENV_KEYS.OPENROUTER_API_KEY];
+      return config.providers.openrouter.apiKey ?? process.env[ENV_KEYS.OPENROUTER_API_KEY];
     case 'openai':
-      return config.providers.openai.apiKey || process.env[ENV_KEYS.OPENAI_API_KEY];
+      return config.providers.openai.apiKey ?? process.env[ENV_KEYS.OPENAI_API_KEY];
     case 'anthropic':
-      return config.providers.anthropic.apiKey || process.env[ENV_KEYS.ANTHROPIC_API_KEY];
+      return config.providers.anthropic.apiKey ?? process.env[ENV_KEYS.ANTHROPIC_API_KEY];
     case 'ollama':
       return undefined; // Ollama doesn't need API key
   }
 }
 
 export function getModel(provider: LLMProviderName, config: EvoSpecConfig): string {
-  // Check environment variable first
+  // Check environment variable first, then fall back to config
+  const envModel = getEnvModel(provider);
+  if (envModel) {
+    return envModel;
+  }
+  return config.llm.models[provider];
+}
+
+function getEnvModel(provider: LLMProviderName): string | undefined {
   switch (provider) {
     case 'openrouter':
-      if (process.env[ENV_KEYS.OPENROUTER_MODEL]) {
-        return process.env[ENV_KEYS.OPENROUTER_MODEL];
-      }
-      break;
+      return process.env[ENV_KEYS.OPENROUTER_MODEL];
     case 'openai':
-      if (process.env[ENV_KEYS.OPENAI_MODEL]) {
-        return process.env[ENV_KEYS.OPENAI_MODEL];
-      }
-      break;
+      return process.env[ENV_KEYS.OPENAI_MODEL];
     case 'anthropic':
-      if (process.env[ENV_KEYS.ANTHROPIC_MODEL]) {
-        return process.env[ENV_KEYS.ANTHROPIC_MODEL];
-      }
-      break;
+      return process.env[ENV_KEYS.ANTHROPIC_MODEL];
     case 'ollama':
-      if (process.env[ENV_KEYS.OLLAMA_MODEL]) {
-        return process.env[ENV_KEYS.OLLAMA_MODEL];
-      }
-      break;
+      return process.env[ENV_KEYS.OLLAMA_MODEL];
   }
-  
-  // Fall back to config
-  return config.llm.models[provider];
 }
 
 export function getBaseUrl(provider: LLMProviderName, config: EvoSpecConfig): string | undefined {
@@ -180,10 +183,9 @@ export function findSpecFile(cwd: string = process.cwd()): string | null {
   }
   
   // Fallback: look for *.evospec.yaml in cwd
-  const { readdirSync } = require('fs');
   try {
-    const files = readdirSync(cwd) as string[];
-    const specFile = files.find((f: string) => f.endsWith('.evospec.yaml'));
+    const files = readdirSync(cwd);
+    const specFile = files.find((f) => f.endsWith('.evospec.yaml'));
     if (specFile) {
       return join(cwd, specFile);
     }
