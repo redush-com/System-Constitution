@@ -1,6 +1,6 @@
 {
   "name": "@redush/sysconst",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "CLI for System Constitution - Architectural governance for autonomous software evolution",
   "bin": {
     "sysconst": "./dist/index.js"
@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicholasoxford/system-constitution.git",
+    "url": "https://github.com/redush-com/System-Constitution.git",
     "directory": "cli"
   },
   "dependencies": {

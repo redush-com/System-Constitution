@@ -1,6 +1,6 @@
 {
   "name": "@redush/sysconst-validator",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Validator for System Constitution - Enforces architectural governance and structural integrity",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -37,7 +37,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicholasoxford/system-constitution.git",
+    "url": "https://github.com/redush-com/System-Constitution.git",
     "directory": "validator"
   },
   "dependencies": {

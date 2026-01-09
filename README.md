@@ -250,5 +250,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## Links
 
 - [Documentation](https://redush.com)
-- [GitHub](https://github.com/nicholasoxford/system-constitution)
+- [GitHub](https://github.com/redush-com/System-Constitution)
 - [npm](https://www.npmjs.com/package/@redush/sysconst-validator)
