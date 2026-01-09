@@ -3,9 +3,9 @@
  * Validates that the system can be verified
  */
 
-import type { ValidationError, EvoSpec, Node } from '../types';
+import type { ValidationError, SysConst, Node } from '../types';
 
-export function validateVerifiability(spec: EvoSpec): ValidationError[] {
+export function validateVerifiability(spec: SysConst): ValidationError[] {
   const errors: ValidationError[] = [];
 
   // Check required pipelines

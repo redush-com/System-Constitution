@@ -5,7 +5,7 @@ title: Node Kinds
 
 # Node Kinds Reference
 
-Complete reference for all node kinds in EvoSpec DSL v1.
+Complete reference for all node kinds in System Constitution DSL v1.
 
 ## Overview
 

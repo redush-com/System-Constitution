@@ -1,7 +1,7 @@
 /**
- * EvoSpec DSL Validator
+ * System Constitution DSL Validator
  * 
- * Validates EvoSpec specifications through 6 phases:
+ * Validates SysConst specifications through 6 phases:
  * 1. Structural - syntax and required fields
  * 2. Referential - references and identity
  * 3. Semantic - kind-specific rules
@@ -19,7 +19,7 @@ import { validateGeneration } from './phases/05-generation';
 import { validateVerifiability } from './phases/06-verifiability';
 
 import type {
-  EvoSpec,
+  SysConst,
   ValidationResult,
   ValidationError,
   ValidateOptions,
@@ -29,7 +29,7 @@ import type {
 export * from './types';
 
 /**
- * Validate an EvoSpec specification
+ * Validate a SysConst specification
  */
 export function validate(
   spec: unknown,
@@ -51,13 +51,13 @@ export function validate(
     }
   }
 
-  // Cast to EvoSpec after structural validation
-  const evoSpec = spec as EvoSpec;
+  // Cast to SysConst after structural validation
+  const sysConst = spec as SysConst;
 
   // Phase 2: Referential
   if (phases.includes(2)) {
     currentPhase = 2;
-    const errors = validateReferential(evoSpec);
+    const errors = validateReferential(sysConst);
     allErrors.push(...errors);
     
     if (hasHardErrors(errors)) {
@@ -68,7 +68,7 @@ export function validate(
   // Phase 3: Semantic
   if (phases.includes(3)) {
     currentPhase = 3;
-    const errors = validateSemantic(evoSpec);
+    const errors = validateSemantic(sysConst);
     allErrors.push(...errors);
     
     if (hasHardErrors(errors)) {
@@ -79,7 +79,7 @@ export function validate(
   // Phase 4: Evolution
   if (phases.includes(4)) {
     currentPhase = 4;
-    const errors = validateEvolution(evoSpec);
+    const errors = validateEvolution(sysConst);
     allErrors.push(...errors);
     
     if (hasHardErrors(errors)) {
@@ -90,7 +90,7 @@ export function validate(
   // Phase 5: Generation
   if (phases.includes(5)) {
     currentPhase = 5;
-    const errors = validateGeneration(evoSpec);
+    const errors = validateGeneration(sysConst);
     allErrors.push(...errors);
     
     if (hasHardErrors(errors)) {
@@ -101,7 +101,7 @@ export function validate(
   // Phase 6: Verifiability
   if (phases.includes(6)) {
     currentPhase = 6;
-    const errors = validateVerifiability(evoSpec);
+    const errors = validateVerifiability(sysConst);
     allErrors.push(...errors);
   }
 
@@ -119,15 +119,15 @@ export function validatePhase(
     case 1:
       return validateStructural(spec);
     case 2:
-      return validateReferential(spec as EvoSpec);
+      return validateReferential(spec as SysConst);
     case 3:
-      return validateSemantic(spec as EvoSpec);
+      return validateSemantic(spec as SysConst);
     case 4:
-      return validateEvolution(spec as EvoSpec);
+      return validateEvolution(spec as SysConst);
     case 5:
-      return validateGeneration(spec as EvoSpec);
+      return validateGeneration(spec as SysConst);
     case 6:
-      return validateVerifiability(spec as EvoSpec);
+      return validateVerifiability(spec as SysConst);
     default:
       throw new Error(`Invalid phase: ${phase}`);
   }

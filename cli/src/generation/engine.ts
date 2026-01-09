@@ -7,7 +7,7 @@ import { readFileSync } from 'fs';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import * as semver from 'semver';
 import type { LLMProvider } from '../llm/provider.js';
-import type { EvoSpecConfig, LLMProviderName } from '../config/schema.js';
+import type { SysConstConfig, LLMProviderName } from '../config/schema.js';
 import { createProvider } from '../llm/index.js';
 import { buildGeneratePrompt, buildEvolvePrompt } from './prompts.js';
 import { generateWithValidation, type GenerationResult } from './validation-loop.js';
@@ -40,10 +40,10 @@ export interface EvolveResult extends GenerationResult {
 }
 
 /**
- * Generate a new EvoSpec specification
+ * Generate a new SysConst specification
  */
 export async function generateSpec(
-  config: EvoSpecConfig,
+  config: SysConstConfig,
   options: GenerateOptions
 ): Promise<GenerationResult> {
   const providerName = options.provider || config.llm.provider;
@@ -60,10 +60,10 @@ export async function generateSpec(
 }
 
 /**
- * Evolve an existing EvoSpec specification
+ * Evolve an existing SysConst specification
  */
 export async function evolveSpec(
-  config: EvoSpecConfig,
+  config: SysConstConfig,
   options: EvolveOptions
 ): Promise<EvolveResult> {
   // Read current spec

@@ -13,7 +13,7 @@ The Evolution Layer provides:
 
 ## 3.2 Versioning Strategy
 
-EvoSpec uses **Semantic Versioning (semver)**:
+SysConst uses **Semantic Versioning (semver)**:
 
 ```yaml
 project:

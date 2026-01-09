@@ -1,6 +1,6 @@
 # Error Codes Reference
 
-Complete reference for all validation error codes in EvoSpec DSL v1.
+Complete reference for all validation error codes in System Constitution DSL v1.
 
 ## Error Format
 
@@ -21,8 +21,8 @@ error:
 | Code | Message | Cause |
 |------|---------|-------|
 | `STRUCTURAL_ERROR` | Invalid spec format | General structural issue |
-| `MISSING_SPEC_VERSION` | Missing 'spec' field | No `spec: evospec/v1` |
-| `INVALID_SPEC_VERSION` | Invalid spec version | `spec` not `evospec/v1` |
+| `MISSING_SPEC_VERSION` | Missing 'spec' field | No `spec: sysconst/v1` |
+| `INVALID_SPEC_VERSION` | Invalid spec version | `spec` not `sysconst/v1` |
 | `MISSING_PROJECT` | Missing 'project' field | No project block |
 | `MISSING_PROJECT_ID` | Missing 'project.id' | No project ID |
 | `MISSING_VERSIONING` | Missing 'project.versioning' | No versioning config |
@@ -232,7 +232,7 @@ error:
 ### In CLI
 
 ```bash
-$ evospec validate myspec.yaml
+$ sysconst validate myspec.yaml
 
 ✗ Phase 3: Semantic validation failed
 
@@ -247,7 +247,7 @@ Validation failed with 1 error(s)
 ### In Code
 
 ```typescript
-import { validate } from '@evospec/validator';
+import { validate } from '@sysconst/validator';
 
 const result = validate(spec);
 

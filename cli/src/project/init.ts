@@ -4,7 +4,7 @@
 
 import { basename, resolve, join } from 'path';
 import { existsSync } from 'fs';
-import type { EvoSpecConfig, LLMProviderName } from '../config/schema.js';
+import type { SysConstConfig, LLMProviderName } from '../config/schema.js';
 import { loadConfig } from '../config/loader.js';
 import { createGit, isGitAvailable, type Git } from '../versioning/git.js';
 import { generateSpec } from '../generation/engine.js';

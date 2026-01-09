@@ -5,7 +5,7 @@
 
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import type { EvoSpecConfig, LLMProviderName } from './schema.js';
+import type { SysConstConfig, LLMProviderName } from './schema.js';
 import { loadConfig, getApiKey, saveApiKey, hasApiKey } from './loader.js';
 
 const PROVIDER_INFO: Record<LLMProviderName, { name: string; url: string; keyPrefix: string }> = {
@@ -37,9 +37,9 @@ const PROVIDER_INFO: Record<LLMProviderName, { name: string; url: string; keyPre
  * Returns the config with the API key set.
  */
 export async function ensureApiKey(
-  config: EvoSpecConfig,
+  config: SysConstConfig,
   provider?: LLMProviderName
-): Promise<{ config: EvoSpecConfig; cancelled: boolean }> {
+): Promise<{ config: SysConstConfig; cancelled: boolean }> {
   const targetProvider = provider ?? config.llm.provider;
   
   // Ollama doesn't need API key

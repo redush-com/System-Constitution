@@ -1,12 +1,12 @@
 # Phased Generation Strategy
 
-A combined approach using **Enhanced Validation (Strategy 2)** and **Multi-Phase Generation (Strategy 5)** to solve schema inconsistency problems in LLM-generated EvoSpec specifications.
+A combined approach using **Enhanced Validation (Strategy 2)** and **Multi-Phase Generation (Strategy 5)** to solve schema inconsistency problems in LLM-generated System Constitution (SysConst) specifications.
 
 ---
 
 ## Problem Statement
 
-When LLM generates EvoSpec schemas from natural language requirements (e.g., "Advanced task tracker like Redmine"), the output often contains:
+When LLM generates SysConst schemas from natural language requirements (e.g., "Advanced task tracker like Redmine"), the output often contains:
 
 - Missing required fields (`modifies`, `output` in Commands)
 - Broken references (enum names, entity links)
@@ -447,7 +447,7 @@ Return the corrected YAML.
 
 | Code | Message | Auto-fixable |
 |------|---------|--------------|
-| `SPEC_VERSION_INVALID` | spec must be "evospec/v1" | Yes |
+| `SPEC_VERSION_INVALID` | spec must be "sysconst/v1" | Yes |
 | `CMD_MISSING_OUTPUT` | Command missing output field | Yes |
 | `CMD_MISSING_MODIFIES` | Command missing effects.modifies | Yes |
 | `STEP_MISSING_INPUTS` | Step missing inputs definition | Yes |

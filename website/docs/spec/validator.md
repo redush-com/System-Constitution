@@ -5,7 +5,7 @@ title: Validator
 
 # 7. Validator
 
-The Validator ensures EvoSpec documents are correct, consistent, and safe for code generation.
+The Validator ensures SysConst documents are correct, consistent, and safe for code generation.
 
 ## 7.1 Validation Phases
 
@@ -47,19 +47,19 @@ error:
 
 ```bash
 # Validate a spec file
-evospec validate myspec.evospec.yaml
+sysconst validate myspec.sysconst.yaml
 
 # Validate specific phases only
-evospec validate myspec.evospec.yaml --phase=1-3
+sysconst validate myspec.sysconst.yaml --phase=1-3
 
 # Strict mode (soft errors become hard)
-evospec validate myspec.evospec.yaml --strict
+sysconst validate myspec.sysconst.yaml --strict
 ```
 
 ## 7.5 Programmatic Usage
 
 ```typescript
-import { validate } from '@evospec/validator';
+import { validate } from '@sysconst/validator';
 
 const result = validate(spec);
 

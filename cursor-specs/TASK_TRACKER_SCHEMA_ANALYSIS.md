@@ -6,18 +6,13 @@ Analysis of inconsistencies and issues in the `task-tracker.sysconst.yaml` schem
 
 ## 1. Global Issues
 
-### 1.1 Incorrect Specification Version
+### 1.1 Specification Version ✓
 
 ```yaml
-spec: sysconst/v1  # ❌ Wrong
+spec: sysconst/v1  # ✓ Correct
 ```
 
-**Problem:** Should be `evospec/v1`. Validator will not recognize the schema.
-
-**Solution:**
-```yaml
-spec: evospec/v1
-```
+**Note:** The spec version `sysconst/v1` is correct. This is not an issue.
 
 ---
 

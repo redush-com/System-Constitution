@@ -3,11 +3,11 @@
  * Validates kind-specific rules and types
  */
 
-import type { ValidationError, EvoSpec, Node } from '../types';
+import type { ValidationError, SysConst, Node } from '../types';
 
 const NODEREF_PATTERN = /^NodeRef\(([a-z][a-z0-9_.-]*)\)$/;
 
-export function validateSemantic(spec: EvoSpec): ValidationError[] {
+export function validateSemantic(spec: SysConst): ValidationError[] {
   const errors: ValidationError[] = [];
 
   // Build indices

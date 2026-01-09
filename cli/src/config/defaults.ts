@@ -2,7 +2,7 @@
  * Default Configuration Values
  */
 
-import type { EvoSpecConfig, LLMConfig, ProvidersConfig, VersioningConfig } from './schema.js';
+import type { SysConstConfig, LLMConfig, ProvidersConfig, VersioningConfig } from './schema.js';
 
 export const DEFAULT_LLM_CONFIG: LLMConfig = {
   provider: 'openrouter',
@@ -35,7 +35,7 @@ export const DEFAULT_VERSIONING_CONFIG: VersioningConfig = {
   tagPrefix: 'v',
 };
 
-export const DEFAULT_CONFIG: EvoSpecConfig = {
+export const DEFAULT_CONFIG: SysConstConfig = {
   llm: DEFAULT_LLM_CONFIG,
   providers: DEFAULT_PROVIDERS_CONFIG,
   versioning: DEFAULT_VERSIONING_CONFIG,

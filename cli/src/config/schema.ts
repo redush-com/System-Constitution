@@ -39,7 +39,7 @@ export interface ProjectConfig {
   specFile: string;
 }
 
-export interface EvoSpecConfig {
+export interface SysConstConfig {
   project?: ProjectConfig;
   llm: LLMConfig;
   providers: ProvidersConfig;

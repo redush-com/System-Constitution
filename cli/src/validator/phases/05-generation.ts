@@ -3,9 +3,9 @@
  * Validates code generation rules
  */
 
-import type { ValidationError, EvoSpec, Zone, Hook } from '../types';
+import type { ValidationError, SysConst, Zone, Hook } from '../types';
 
-export function validateGeneration(spec: EvoSpec): ValidationError[] {
+export function validateGeneration(spec: SysConst): ValidationError[] {
   const errors: ValidationError[] = [];
 
   // If no generation config, skip

@@ -3,7 +3,7 @@
  * Validates syntax and required fields
  */
 
-import type { ValidationError, EvoSpec, Node } from '../types';
+import type { ValidationError, SysConst, Node } from '../types';
 
 const VALID_KINDS = [
   'System',

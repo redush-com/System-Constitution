@@ -9,7 +9,7 @@ The Evolution Layer describes **how** the system changes over time — version h
 
 ## 3.1 Versioning Strategy
 
-EvoSpec uses **Semantic Versioning (semver)**:
+SysConst uses **Semantic Versioning (semver)**:
 
 ```yaml
 project:

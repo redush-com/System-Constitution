@@ -3,9 +3,9 @@
  * Validates version history and migrations
  */
 
-import type { ValidationError, EvoSpec, HistoryEntry } from '../types';
+import type { ValidationError, SysConst, HistoryEntry } from '../types';
 
-export function validateEvolution(spec: EvoSpec): ValidationError[] {
+export function validateEvolution(spec: SysConst): ValidationError[] {
   const errors: ValidationError[] = [];
 
   // If no history, skip evolution validation

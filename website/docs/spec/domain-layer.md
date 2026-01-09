@@ -9,7 +9,7 @@ The Domain Layer describes **what** the system is — its data structures, opera
 
 ## 2.1 Node Kinds
 
-EvoSpec v1 defines the following node kinds:
+SysConst v1 defines the following node kinds:
 
 | Kind | Purpose |
 |------|---------|

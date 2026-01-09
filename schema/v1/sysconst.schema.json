@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://evospec.dev/schema/v1/evospec.schema.json",
-  "title": "EvoSpec DSL v1",
-  "description": "Schema for Evolution Software Specification DSL - a language for managed LLM-driven software evolution",
+  "$id": "https://sysconst.dev/schema/v1/sysconst.schema.json",
+  "title": "System Constitution DSL v1",
+  "description": "Schema for System Constitution DSL - a language for managed LLM-driven software evolution",
   "type": "object",
   "required": ["spec", "project", "structure", "domain"],
   "properties": {
     "spec": {
-      "const": "evospec/v1",
+      "const": "sysconst/v1",
       "description": "DSL version identifier"
     },
     "project": {

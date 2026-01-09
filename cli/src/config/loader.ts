@@ -7,7 +7,7 @@ import { existsSync, readFileSync, readdirSync, mkdirSync, writeFileSync } from 
 import { homedir } from 'os';
 import { join, resolve } from 'path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import type { EvoSpecConfig, ProjectLocalConfig, LLMProviderName, LLMConfig, VersioningConfig } from './schema.js';
+import type { SysConstConfig, ProjectLocalConfig, LLMProviderName, LLMConfig, VersioningConfig } from './schema.js';
 import { DEFAULT_CONFIG, ENV_KEYS } from './defaults.js';
 
 const GLOBAL_CONFIG_DIR = join(homedir(), '.sysconst');
@@ -36,7 +36,7 @@ function deepMergeVersioningConfig(target: VersioningConfig, source: Partial<Ver
   };
 }
 
-function mergeConfig(target: EvoSpecConfig, source: Partial<EvoSpecConfig>): EvoSpecConfig {
+function mergeConfig(target: SysConstConfig, source: Partial<SysConstConfig>): SysConstConfig {
   return {
     project: source.project ?? target.project,
     llm: source.llm ? deepMergeLLMConfig(target.llm, source.llm) : target.llm,
@@ -63,8 +63,8 @@ function loadYamlFile<T>(filePath: string): T | null {
   }
 }
 
-export function loadGlobalConfig(): Partial<EvoSpecConfig> {
-  return loadYamlFile<Partial<EvoSpecConfig>>(GLOBAL_CONFIG_FILE) ?? {};
+export function loadGlobalConfig(): Partial<SysConstConfig> {
+  return loadYamlFile<Partial<SysConstConfig>>(GLOBAL_CONFIG_FILE) ?? {};
 }
 
 export function loadLocalConfig(cwd: string = process.cwd()): ProjectLocalConfig | null {
@@ -72,9 +72,9 @@ export function loadLocalConfig(cwd: string = process.cwd()): ProjectLocalConfig
   return loadYamlFile<ProjectLocalConfig>(localConfigPath);
 }
 
-export function loadConfig(cwd: string = process.cwd()): EvoSpecConfig {
+export function loadConfig(cwd: string = process.cwd()): SysConstConfig {
   // Start with defaults
-  let config: EvoSpecConfig = { ...DEFAULT_CONFIG };
+  let config: SysConstConfig = { ...DEFAULT_CONFIG };
   
   // Merge global config
   const globalConfig = loadGlobalConfig();
@@ -111,7 +111,7 @@ export function loadConfig(cwd: string = process.cwd()): EvoSpecConfig {
   return config;
 }
 
-export function getApiKey(provider: LLMProviderName, config: EvoSpecConfig): string | undefined {
+export function getApiKey(provider: LLMProviderName, config: SysConstConfig): string | undefined {
   switch (provider) {
     case 'openrouter':
       return config.providers.openrouter.apiKey ?? process.env[ENV_KEYS.OPENROUTER_API_KEY];
@@ -124,7 +124,7 @@ export function getApiKey(provider: LLMProviderName, config: EvoSpecConfig): str
   }
 }
 
-export function getModel(provider: LLMProviderName, config: EvoSpecConfig): string {
+export function getModel(provider: LLMProviderName, config: SysConstConfig): string {
   // Check environment variable first, then fall back to config
   const envModel = getEnvModel(provider);
   if (envModel) {
@@ -146,7 +146,7 @@ function getEnvModel(provider: LLMProviderName): string | undefined {
   }
 }
 
-export function getBaseUrl(provider: LLMProviderName, config: EvoSpecConfig): string | undefined {
+export function getBaseUrl(provider: LLMProviderName, config: SysConstConfig): string | undefined {
   return config.providers[provider].baseUrl;
 }
 
@@ -163,8 +163,8 @@ export function findProjectRoot(startDir: string = process.cwd()): string | null
   const root = resolve('/');
   
   while (currentDir !== root) {
-    const evospecDir = join(currentDir, LOCAL_CONFIG_DIR);
-    if (existsSync(evospecDir)) {
+    const sysconstDir = join(currentDir, LOCAL_CONFIG_DIR);
+    if (existsSync(sysconstDir)) {
       return currentDir;
     }
     currentDir = resolve(currentDir, '..');
@@ -229,7 +229,7 @@ export function saveApiKey(provider: LLMProviderName, apiKey: string): void {
 /**
  * Check if API key is configured for a provider
  */
-export function hasApiKey(provider: LLMProviderName, config: EvoSpecConfig): boolean {
+export function hasApiKey(provider: LLMProviderName, config: SysConstConfig): boolean {
   const apiKey = getApiKey(provider, config);
   return apiKey !== undefined && apiKey.length > 0;
 }

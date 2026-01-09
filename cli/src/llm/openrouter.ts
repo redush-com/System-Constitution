@@ -24,7 +24,7 @@ export class OpenRouterProvider implements LLMProvider {
       apiKey: config.apiKey,
       baseURL: config.baseUrl || 'https://openrouter.ai/api/v1',
       defaultHeaders: {
-        'HTTP-Referer': 'https://evospec.dev',
+        'HTTP-Referer': 'https://sysconst.dev',
         'X-Title': 'System Constitution CLI',
       },
     });

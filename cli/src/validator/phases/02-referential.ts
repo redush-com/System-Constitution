@@ -3,11 +3,11 @@
  * Validates references and identity
  */
 
-import type { ValidationError, EvoSpec, Node } from '../types';
+import type { ValidationError, SysConst, Node } from '../types';
 
 const NODEREF_PATTERN = /^NodeRef\(([a-z][a-z0-9_.-]*)\)$/;
 
-export function validateReferential(spec: EvoSpec): ValidationError[] {
+export function validateReferential(spec: SysConst): ValidationError[] {
   const errors: ValidationError[] = [];
 
   // Build node index

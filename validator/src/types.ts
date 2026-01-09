@@ -1,5 +1,5 @@
 /**
- * EvoSpec DSL Validator Types
+ * System Constitution DSL Validator Types
  */
 
 // ============================================
@@ -185,7 +185,7 @@ export interface Docs {
   packs?: DocPack[];
 }
 
-export interface EvoSpec {
+export interface SysConst {
   spec: 'sysconst/v1';
   project: Project;
   structure: Structure;

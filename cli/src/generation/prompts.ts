@@ -253,7 +253,7 @@ domain:
       meta: { title: "My Application" }
       spec:
         goals:
-          - "Demonstrate minimal EvoSpec"
+          - "Demonstrate minimal SysConst"
 \`\`\`
 
 ---

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * EvoSpec CLI
- * Command-line interface for EvoSpec DSL validation, generation, and versioning
+ * SysConst CLI
+ * Command-line interface for System Constitution DSL validation, generation, and versioning
  */
 
 // Load environment variables from .env file in current directory, project root, or home directory

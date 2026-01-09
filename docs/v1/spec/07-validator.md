@@ -1,6 +1,6 @@
 # 7. Validator
 
-The Validator ensures EvoSpec documents are correct, consistent, and safe for code generation.
+The Validator ensures SysConst documents are correct, consistent, and safe for code generation.
 
 ## 7.1 Purpose
 
@@ -32,7 +32,7 @@ Validates syntax and required fields.
 
 | Rule | Level |
 |------|-------|
-| `spec` MUST equal `evospec/v1` | hard |
+| `spec` MUST equal `sysconst/v1` | hard |
 | `project.id` MUST exist | hard |
 | `project.versioning.strategy` MUST exist | hard |
 | `project.versioning.current` MUST exist | hard |
@@ -366,24 +366,24 @@ This is the foundation of **managed evolution**.
 
 ```bash
 # Validate a spec file
-evospec validate myspec.evospec.yaml
+sysconst validate myspec.sysconst.yaml
 
 # Validate specific phases only
-evospec validate myspec.evospec.yaml --phase=1-3
+sysconst validate myspec.sysconst.yaml --phase=1-3
 
 # Output format
-evospec validate myspec.evospec.yaml --format=json
+sysconst validate myspec.sysconst.yaml --format=json
 
 # Strict mode (soft errors become hard)
-evospec validate myspec.evospec.yaml --strict
+sysconst validate myspec.sysconst.yaml --strict
 ```
 
 ## 7.14 Programmatic Usage
 
 ```typescript
-import { validate, ValidationResult } from '@evospec/validator';
+import { validate, ValidationResult } from '@sysconst/validator';
 
-const spec = loadSpec('myspec.evospec.yaml');
+const spec = loadSpec('myspec.sysconst.yaml');
 const result: ValidationResult = validate(spec);
 
 if (result.ok) {
@@ -402,8 +402,8 @@ if (result.ok) {
 
 ```bash
 # In CI/CD
-- name: Validate EvoSpec
-  run: evospec validate spec.evospec.yaml --strict
+- name: Validate SysConst
+  run: sysconst validate spec.sysconst.yaml --strict
 ```
 
 ### 2. Fix Hard Errors First
@@ -417,7 +417,7 @@ Soft warnings often indicate future problems. Address them proactively.
 ### 4. Use Strict Mode in CI
 
 ```bash
-evospec validate spec.evospec.yaml --strict
+sysconst validate spec.sysconst.yaml --strict
 ```
 
 ### 5. Validate Before LLM Generation

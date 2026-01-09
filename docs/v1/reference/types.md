@@ -1,6 +1,6 @@
 # Type System Reference
 
-Complete reference for the EvoSpec DSL type system.
+Complete reference for the System Constitution DSL type system.
 
 ## Primitive Types
 
@@ -217,7 +217,7 @@ fields:
 
 ## Type Coercion
 
-EvoSpec does NOT perform automatic type coercion. Types must match exactly.
+SysConst does NOT perform automatic type coercion. Types must match exactly.
 
 ```yaml
 # Valid
@@ -249,7 +249,7 @@ fields:
 
 ## Array Types
 
-EvoSpec v1 does not have native array types. Use relations for collections:
+SysConst v1 does not have native array types. Use relations for collections:
 
 ```yaml
 - kind: Entity

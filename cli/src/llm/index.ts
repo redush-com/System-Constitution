@@ -14,12 +14,12 @@ import { OpenRouterProvider } from './openrouter.js';
 import { OpenAIProvider } from './openai.js';
 import { AnthropicProvider } from './anthropic.js';
 import { OllamaProvider } from './ollama.js';
-import type { EvoSpecConfig, LLMProviderName } from '../config/schema.js';
+import type { SysConstConfig, LLMProviderName } from '../config/schema.js';
 import { getApiKey, getModel, getBaseUrl } from '../config/loader.js';
 
 export function createProvider(
   providerName: LLMProviderName,
-  config: EvoSpecConfig,
+  config: SysConstConfig,
   modelOverride?: string
 ): LLMProvider {
   const model = modelOverride || getModel(providerName, config);
@@ -69,7 +69,7 @@ export function createProvider(
   }
 }
 
-export async function getAvailableProviders(config: EvoSpecConfig): Promise<LLMProviderName[]> {
+export async function getAvailableProviders(config: SysConstConfig): Promise<LLMProviderName[]> {
   const providers: LLMProviderName[] = ['openrouter', 'openai', 'anthropic', 'ollama'];
   const available: LLMProviderName[] = [];
   
