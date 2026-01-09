@@ -8,6 +8,10 @@
     "cli",
     "website"
   ],
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-fetch": "^3.3.2"
+  },
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm -r dev",

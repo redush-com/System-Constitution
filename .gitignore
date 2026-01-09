@@ -21,8 +21,6 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Environment
-.env
-.env.local
 .env.*.local
 
 # Test coverage
@@ -35,3 +33,4 @@ coverage/
 
 # OS files
 Thumbs.db
+config.bat
