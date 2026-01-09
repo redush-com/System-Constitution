@@ -48,7 +48,7 @@ const program = new Command();
 program
   .name('sysconst')
   .description('CLI for System Constitution validation, generation, and versioning')
-  .version('1.0.0');
+  .version('2.0.2');
 
 // ============================================
 // Validate Command

@@ -1,6 +1,6 @@
 {
   "name": "@redush/sysconst",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "System Constitution - Architectural governance for autonomous software evolution (CLI + Validator)",
   "bin": {
     "sysconst": "./dist/index.js"
