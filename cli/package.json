@@ -1,18 +1,26 @@
 {
   "name": "@redush/sysconst",
-  "version": "1.0.2",
-  "description": "CLI for System Constitution - Architectural governance for autonomous software evolution",
+  "version": "2.0.0",
+  "description": "System Constitution - Architectural governance for autonomous software evolution (CLI + Validator)",
   "bin": {
     "sysconst": "./dist/index.js"
   },
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs --dts",
-    "dev": "tsup src/index.ts --format cjs --dts --watch",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit"
   },
@@ -30,11 +38,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/redush-com/System-Constitution.git",
-    "directory": "cli"
+    "directory": "."
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.33.1",
-    "@redush/sysconst-validator": "workspace:*",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "chalk": "^5.4.1",
     "commander": "^12.1.0",
     "dotenv": "^17.2.3",

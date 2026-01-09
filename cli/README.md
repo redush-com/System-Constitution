@@ -1,19 +1,25 @@
 # @redush/sysconst
 
-**CLI for System Constitution**
+**System Constitution — Architectural governance for autonomous software evolution**
 
 [![npm version](https://img.shields.io/npm/v/@redush/sysconst.svg)](https://www.npmjs.com/package/@redush/sysconst)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/redush-com/System-Constitution/blob/main/LICENSE)
 
-Part of [System Constitution](https://github.com/redush-com/System-Constitution) — an architectural governance layer for autonomous software evolution.
+System Constitution is an **architectural governance layer** that enforces structural integrity and controls permissible evolution of software systems. Designed for autonomous LLM generation without human-in-the-loop — stability through formal constraints, not process discipline.
 
 ## Installation
 
 ```bash
+# Global CLI
 npm install -g @redush/sysconst
+
+# As library
+npm install @redush/sysconst
 ```
 
 ## Quick Start
+
+### CLI Usage
 
 ```bash
 # Create a new constitution with LLM generation
@@ -26,7 +32,35 @@ sysconst init myapp --no-generate
 sysconst validate myapp.sysconst.yaml
 ```
 
-## Commands
+### Programmatic Usage
+
+```typescript
+import { validate, validateYaml, parseSpec } from '@redush/sysconst';
+
+// Validate YAML string
+const result = validateYaml(`
+spec: sysconst/v1
+project:
+  id: myapp
+  versioning:
+    strategy: semver
+    current: "1.0.0"
+domain:
+  nodes:
+    - kind: System
+      id: system.root
+      spec:
+        goals: ["My application"]
+`);
+
+if (result.ok) {
+  console.log('Constitution is valid!');
+} else {
+  console.log('Errors:', result.errors);
+}
+```
+
+## CLI Commands
 
 ### `init` — Create New Constitution
 
@@ -86,37 +120,70 @@ sysconst version bump <major|minor|patch> -f <file>
 
 # Tag current version in Git
 sysconst version tag -f <file>
-
-# Examples
-sysconst version bump minor -f myapp.sysconst.yaml
-sysconst version tag -f myapp.sysconst.yaml
 ```
 
 ### `history` — View Version History
 
 ```bash
 sysconst history -f <file>
-
-# Shows Git history of constitution changes
 ```
 
 ### `diff` — Compare Versions
 
 ```bash
 sysconst diff <version1> <version2> -f <file>
-
-# Example
-sysconst diff v1.0.0 v1.1.0 -f myapp.sysconst.yaml
 ```
 
 ### `checkout` — Restore Version
 
 ```bash
 sysconst checkout <version>
-
-# Example
-sysconst checkout v1.0.0
 ```
+
+## Validation API
+
+### `validateYaml(yaml: string, options?): ValidationResult`
+
+Validates a YAML string containing a System Constitution.
+
+### `validate(spec: unknown, options?): ValidationResult`
+
+Validates a parsed spec object.
+
+### `parseSpec(yaml: string): unknown`
+
+Parses YAML string to spec object.
+
+### `ValidationResult`
+
+```typescript
+interface ValidationResult {
+  ok: boolean;
+  errors: ValidationError[];
+  warnings: ValidationError[];
+  phase: ValidationPhase;
+}
+
+interface ValidationError {
+  code: string;
+  message: string;
+  phase: ValidationPhase;
+  level: 'hard' | 'soft';
+  location?: string;
+  suggestion?: string;
+}
+```
+
+## Validation Phases
+
+| Phase | Description |
+|-------|-------------|
+| **1. Structural** | Syntax, required fields, JSON Schema compliance |
+| **2. Referential** | NodeRef resolution, unique IDs, no dangling references |
+| **3. Semantic** | Kind-specific rules (Entity fields, Command params, etc.) |
+| **4. Evolution** | Version history, migration compatibility |
+| **5. Generation** | Zone safety, hook anchor validation |
+| **6. Verifiability** | Scenario coverage, pipeline definitions |
 
 ## LLM Providers
 
@@ -139,13 +206,6 @@ export OPENROUTER_API_KEY=sk-or-v1-...
 export OPENAI_API_KEY=sk-...
 # or
 export ANTHROPIC_API_KEY=sk-ant-...
-```
-
-**Switch provider:**
-
-```bash
-sysconst init myapp -d "..." --provider openai
-sysconst init myapp -d "..." --provider ollama  # Free, no API key
 ```
 
 ## Constitution File Format
@@ -179,10 +239,6 @@ domain:
       contracts:
         - invariant: "email != ''"
 ```
-
-## Related Packages
-
-- [`@redush/sysconst-validator`](https://www.npmjs.com/package/@redush/sysconst-validator) — Validation library
 
 ## Links
 

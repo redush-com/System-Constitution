@@ -3,7 +3,7 @@
  */
 
 import { parse as parseYaml } from 'yaml';
-import { validateYaml, type ValidationResult, type ValidationError } from '@redush/sysconst-validator';
+import { validateYaml, type ValidationResult, type ValidationError } from '../validator/index.js';
 import type { LLMProvider } from '../llm/provider.js';
 import { getSystemPrompt, buildErrorFeedbackPrompt } from './prompts.js';
 
