@@ -231,9 +231,11 @@ export async function getSpecAtVersion(
   tagPrefix: string = 'v'
 ): Promise<string | null> {
   const tagName = `${tagPrefix}${version}`;
+  const { basename } = await import('path');
+  const fileName = basename(specFile);
   
   try {
-    return await git.show(tagName, specFile);
+    return await git.show(tagName, fileName);
   } catch {
     return null;
   }
